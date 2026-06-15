@@ -1,0 +1,142 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    background-color: #f4f4f4;
+}
+
+.container {
+    max-width: 960px;
+    margin: 0 auto;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h1, h2, h3 {
+    color: #333;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+th {
+    background-color: #f0f0f0;
+}
+
+img {
+    width: 50px;
+    height: 50px;
+    vertical-align: middle;
+}
+
+.pagination {
+    margin-top: 20px;
+}
+
+.pagination a, .pagination span {
+    display: inline-block;
+    padding: 8px 12px;
+    margin-right: 5px;
+    border: 1px solid #ccc;
+    text-decoration: none;
+    color: #333;
+    border-radius: 3px;
+}
+
+.pagination a:hover {
+    background-color: #ddd;
+}
+
+.current-page {
+    background-color: #5cb85c;
+    color: white;
+    border-color: #4cae4c;
+}
+
+.button {
+    display: inline-block;
+    padding: 8px 15px;
+    margin-right: 5px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.button:hover {
+    background-color: #0056b3;
+}
+
+.cancel-button {
+    background-color: #dc3545;
+}
+
+.cancel-button:hover {
+    background-color: #c82333;
+}
+
+.add-form, .update-form {
+    margin-top: 20px;
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+
+.form-group {
+    margin-bottom: 10px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.form-group input[type="text"],
+.form-group input[type="password"],
+.form-group input[type="number"],
+.form-group input[type="file"],
+.form-group textarea {
+    width: calc(100% - 12px);
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    box-sizing: border-box;
+}
+
+.form-group textarea {
+    resize: vertical;
+}
+
+.alert {
+    padding: 15px;
+    margin-bottom: 10px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+
+.alert-success {
+    color: #155724;
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+}
+
+.alert-danger {
+    color: #721c24;
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+}
+
