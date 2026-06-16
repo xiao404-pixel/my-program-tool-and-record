@@ -18,8 +18,7 @@ try {
     $total_products = $total_stmt->fetchColumn();
     $total_pages = ceil($total_products / $items_per_page);
     // 取得當前頁面的產品資料
-    //$stmt = $pdo->prepare("SELECT pno, pname, pptime, pscrib, ppic FROM products LIMIT :offset, :limit");
-    $stmt = $pdo->prepare("SELECT pno, pname, pscrib, ppic FROM products LIMIT :offset, :limit");
+    $stmt = $pdo->prepare("SELECT pno, pname, pptime, pscrib, ppic, pmap_link FROM products LIMIT :offset, :limit");
     $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
     $stmt->bindParam(':limit', $items_per_page, PDO::PARAM_INT);
     $stmt->execute();
@@ -35,27 +34,41 @@ try {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>內門特產產品資料管理系統_首頁</title>
+    <title>首頁</title>
     <link rel="stylesheet" href="mystyle.css">
 </head>
 <body>
     <div class="container">
-        <center><h1><U>內門區景點與特有活動資料管理系統_首頁</U></h1></center>
-        <p>歡迎，<?php echo $_SESSION['username']; ?>！ <a href="logout.php" class="button">登出</a></p>
+        <h1>內門區景點與特有活動資料管理系統_首頁</h1>
+        <div class="user-nav">
+            <p>歡迎，<?php echo $_SESSION['username']; ?>！</p>
+            <a href="logout.php" class="button">登出</a>
+        </p>
+    </div>
 
+    <div class="table-responsive">
         <table>
             <thead>
-                <tr><th>景點活動編號</th><th>景點活動名稱</th><th>景點活動詳細描述</th><th>景點活動圖片</th><th>操作</th>
+                <tr><th>景點活動編號</th><th>景點活動名稱</th><th>景點活動時間</th><th>景點活動詳細描述</th><th>景點活動圖片</th><th>地圖導航連結</th><th>操作</th>
             </thead>
             <tbody>
                 <?php if(count($products)>0): ?>
-                    <?php foreach ($products as $product): //每一筆產品?>
+                    <?php
+                    $counter = $offset + 1;
+                    foreach ($products as $product): ?>
                         <tr>
-                            <td><?php echo $product['pno'];//景點活動編號 ?></td>
-                            <td><?php echo $product['pname'];//景點活動名稱 ?></td>
-                            <!-- <td><?php echo $product['pptime'];//景點活動時間 ?></td> -->
-                            <td><?php echo $product['pscrib'];//景點活動詳細描述 ?></td>
-                            <td><img src="imgs/<?php echo $product['ppic'];//景點活動圖片 ?>" alt="<?php echo $product['pname']; ?>"></td>
+                            <td><?php echo $counter++; //景點活動編號 ?></td>
+                            <td><?php echo $product['pname']; //景點活動名稱 ?></td>
+                            <td><?php echo $product['pptime']; //景點活動時間 ?></td>
+                            <td><?php echo $product['pscrib']; //景點活動詳細描述 ?></td>
+                            <td><img src="imgs/<?php echo $product['ppic']; //景點活動圖片 ?>" alt="<?php echo $product['pname']; ?>"></td>
+                            <td>
+                                <?php if (!empty($product['pmap_link'])): ?>
+                                    <a href="<?php echo $product['pmap_link']; ?>" target="_blank" class="button">查看地圖</a>
+                                <?php else: ?>
+                                    <span style="color: #999;">無</span>
+                                <?php endif; ?>
+                            </td>
                             <td>
                                 <a href="delete.php?pno=<?php echo $product['pno']; ?>" class="button cancel-button">刪除</a>
                                 <a href="update.php?pno=<?php echo $product['pno']; ?>" class="button">修改</a>
@@ -67,6 +80,7 @@ try {
                 <?php endif; ?>
             </tbody>
         </table>
+    </div>
 
         <div class="pagination">
             <a href="home.php">首頁</a>

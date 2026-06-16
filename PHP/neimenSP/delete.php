@@ -58,7 +58,7 @@ if (isset($_GET['confirm']) && $_GET['confirm'] === 'yes') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>確認刪除產品</title>
+    <title>確認刪除景點活動</title>
     <link rel="stylesheet" href="mystyle.css">
     <script>
         function confirmDelete() {
@@ -72,7 +72,7 @@ if (isset($_GET['confirm']) && $_GET['confirm'] === 'yes') {
 </head>
 <body>
     <div class="container">
-        <center><h1><U>內門區景點與特有活動資料管理系統_確認刪除景點活動</U></h1></center>
+        <h1>內門區景點與特有活動資料管理系統_確認刪除景點活動</h1>
         <p>您確定要刪除景點活動：</p>
         <table>
             <tr>

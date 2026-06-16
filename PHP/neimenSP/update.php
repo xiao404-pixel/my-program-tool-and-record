@@ -20,8 +20,7 @@ $product = null;//當前的一筆景點活動資料
 $upload_error = '';//發生錯誤
 
 try {
-    //$stmt = $pdo->prepare("SELECT pno, pname, pptime, pscrib, ppic FROM products WHERE pno = :pno");//取得目前此筆的資料SQL
-    $stmt = $pdo->prepare("SELECT pno, pname, pscrib, ppic FROM products WHERE pno = :pno");//取得目前此筆的資料SQL
+    $stmt = $pdo->prepare("SELECT pno, pname, pptime, pscrib, ppic, pmap_link FROM products WHERE pno = :pno");//取得目前此筆的資料SQL
     $stmt->bindParam(':pno', $pno, PDO::PARAM_INT);//連結pno參數
     $stmt->execute();//確實執行SQL
     $product = $stmt->fetch(PDO::FETCH_ASSOC);//
@@ -35,8 +34,12 @@ try {
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $pname = $_POST['pname'];
+    $pptime = $_POST['pptime'];
     $pscrib = $_POST['pscrib'];
+    $pmap_link = $_POST['pmap_link'];
     $old_ppic = $_POST['old_ppic'];
+    // 如果沒上傳新圖，就會保留舊圖
+    $ppic = $old_ppic;
     // 處理圖片上傳
     if (isset($_FILES['ppic']) && $_FILES['ppic']['error'] === UPLOAD_ERR_OK) {
         $allowed_types = ['image/png', 'image/jpg', 'image/jpeg', 'image/gif'];
@@ -64,10 +67,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if (empty($upload_error)) {
         try {
-            $stmt = $pdo->prepare("UPDATE products SET pname= :pname,pscrib= :pscrib, ppic= :ppic WHERE pno = :pno");
+            $stmt = $pdo->prepare("UPDATE products SET pname= :pname, pptime= :pptime, pscrib= :pscrib, ppic= :ppic, pmap_link= :pmap_link WHERE pno = :pno");
             $stmt->bindParam(':pname', $pname);
+            $stmt->bindParam(':pptime', $pptime);
             $stmt->bindParam('pscrib', $pscrib);
             $stmt->bindParam('ppic', $ppic);
+            $stmt->bindParam('pmap_link', $pmap_link);
             $stmt->bindParam('pno', $pno, PDO::PARAM_INT);
             $stmt->execute();
             
@@ -85,7 +90,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>內門區景點與特有活動資料管理系統_修改景點活動</title>
+    <title>修改景點活動</title>
     <link rel="stylesheet" href="mystyle.css">
     <script>
         function confirmUpdate() {
@@ -105,13 +110,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 <body>
     <div class="container">
-       <center><h1><U>內門區景點與特有活動資料管理系統_修改景點活動</U></h1></center>
+        <h1>內門區景點與特有活動資料管理系統_修改景點活動</h1>
         <form id="updateForm" method="POST" enctype="multipart/form-data">
             <input type="hidden" name="pno" value="<?php echo $product['pno']; ?>">
             <input type="hidden" name="old_ppic" value="<?php echo $product['ppic']; ?>">
             <div class="form-group">
                 <label for="pname">景點活動名稱:</label>
                 <input type="text" id="pname" name="pname" value="<?php echo $product['pname']; ?>" required>
+            </div>
+            <div class="form-group">
+                <label for="pptime">景點活動時間:</label>
+                <input type="text" id="pptime" name="pptime" value="<?php echo $product['pptime']; ?>" required>
             </div>
             <div class="form-group">
                 <label for="pscrib">景點活動描述:</label>
@@ -129,6 +138,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <?php if ($upload_error): ?>
                     <div class="alert alert-danger"><?php echo $upload_error; ?></div>
                 <?php endif; ?>
+            </div>
+            <div class="form-group">
+                <label for="pmap_link">地圖導航連結:</label>
+                <input type="url" id="pmap_link" name="pmap_link" value="<?php echo $product['pmap_link'] ?? ''; ?>" placeholder="https://maps.google.com/...">
             </div>
             <button type="button" class="button" onclick="confirmUpdate()">確定存檔</button>
             <button type="button" class="button cancel-button" onclick="cancelUpdate()">取消作業</button>

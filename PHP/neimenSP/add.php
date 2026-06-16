@@ -15,8 +15,9 @@ $success_message = '';
 //.... if for $_POSTs.....
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $pname = $_POST['pname'];
-    //$pptime = $_POST['pptime'];
+    $pptime = $_POST['pptime'];
     $pscrib = $_POST['pscrib'];
+    $pmap_link = $_POST['pmap_link'];
 
     // 處理圖片上傳
     $ppic = '';
@@ -42,10 +43,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 //.... if for empty($upload_error)) => INSERT INTO.....
     if (empty($upload_error)){//檔案上傳正常
         try{
-            $stmt = $pdo->prepare("INSERT INTO products (pname, pscrib, ppic) VALUES (:pname, :pscrib, :ppic)");
+            $stmt = $pdo->prepare("INSERT INTO products (pname, pptime, pscrib, ppic, pmap_link) VALUES (:pname, :pptime, :pscrib, :ppic, :pmap_link)");
             $stmt->bindParam(":pname",$pname);//綁定資料參數
+            $stmt->bindParam(":pptime", $pptime);
             $stmt->bindParam(":pscrib",$pscrib);
             $stmt->bindParam(":ppic",$ppic);
+            $stmt->bindParam(":pmap_link", $pmap_link);
             $stmt->execute();//確定執行新增
             header("Location: home.php");//新增成功，返回首頁
             exit;
@@ -61,7 +64,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>內門區景點與特有活動資料管理系統_新增景點活動</title>
+    <title>新增景點活動</title>
     <link rel="stylesheet" href="mystyle.css">
     <script>
     //JS for confirm save new, or cancel
@@ -79,11 +82,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 <body>
     <div class="container">
-        <center><h1><U>內門區景點與特有活動資料管理系統_新增景點活動</U></h1></center>
+        <h1>內門區景點與特有活動資料管理系統_新增景點活動</h1>
         <form id="addForm" method="POST" enctype="multipart/form-data">
             <div class="form-group">
                 <label for="pname">景點活動名稱:</label>
                 <input type="text" id="pname" name="pname" required>
+            </div>
+            <div class="form-group">
+                <label for="pptime">景點活動時間:</label>
+                <input type="text" id="pptime" name="pptime" required> 
             </div>
             <div class="form-group">
                 <label for="pscrib">景點活動詳細描述:</label>
@@ -96,6 +103,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <div class="alert alert-danger"><?php echo $upload_error; ?></div>
                 <?php endif; ?>
             </div>
+            <div class="form-group">
+                <label for="pmap_link">地圖導航連結:</label>
+                <input type="url" id="pmap_link" name="pmap_link" placeholder="https://maps.google.com/...">
+                <small style="color: #666;">可選填，例如 Google Maps 連結</small>
+            </div>
+
             <button type="button" class="button" onclick="confirmSave()">確定存檔</button>
             <button type="button" class="button cancel-button" onclick="cancelAdd()">取消作業</button>
         </form>
