@@ -60,6 +60,18 @@ else:
 
 print(f"您的每日總消耗熱量 (TDEE) 為：{tdee:.0f} 大卡")
 
+#=========================
+#5. 放縱日選擇
+#========================= 
+indulgence_day = input("\n前日是否為放縱日？(Y/N)：").strip().upper() 
+indulgence_record = "" 
+if indulgence_day == "Y": 
+    indulgence_record = "前日為放縱日\n" 
+elif indulgence_day == "N":
+    indulgence_record = "前日非放縱日\n" 
+else: 
+    indulgence_record = "前日放縱日狀態：未確認\n" 
+
 # =========================
 # 5. 飲食建議
 # =========================
